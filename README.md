@@ -1,5 +1,5 @@
 # Description
-A collection of scripts for character rigging in Maya.
+A collection of scripts I made for character rigging in Maya.
 
 # Scripts
 
