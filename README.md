@@ -15,7 +15,7 @@ FKIK Switch: Automates the creation of the necessary connections for the result 
 
 # Aim Constraint
 
-These gifs display an aim constraint I scripted using the tools established within the modular rigging system used at Respawn Entertainment on *Apex Legends*. Given the proprietary nature of the tools, I cannot share the code. But these gifs should give an idea of how it functions. The first gif shows the component being created from scratch and creating a new bone. The second gif demonstrates that it also works when you select a pre-existing bone before excuting the script.
+These gifs display an aim constraint component I scripted using the tools established within the modular rigging system used at Respawn Entertainment on *Apex Legends*. Given the proprietary nature of the tools, I cannot share the code. But these gifs should give an idea of how it functions. The first gif shows the component being created from scratch and creating a new bone. The second gif demonstrates that it also works when you select a pre-existing bone before excuting the script.
 
 ![Alt Text](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/aimConstraint_respawn_01.gif)
 
