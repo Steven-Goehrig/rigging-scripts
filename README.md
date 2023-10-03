@@ -5,7 +5,7 @@ A collection of scripts I made for character rigging in Maya.
 
 [Matrix Constraint](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/matrixConstraint.py): Constrains the destination node to the source node. Written with PyMEL and OpenMaya.
 
-FKIK Switch: Automates the creation of the necessary connections for the result skeleton of a biped to be driven by both Forward Kinematic and Inverse Kinematic systems. Written with PyMEL.
+[FKIK Switch](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/FKIKSwitch.py): Automates the creation of the necessary connections for the result skeleton of a biped to be driven by both Forward Kinematic and Inverse Kinematic systems. Written with PyMEL.
 
 [Left Arm IK Stretch](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/L_arm_IKStretch.py): Automates the creation of the necessary connections for the IK system to squash and stretch. Written with Cmds.
 
