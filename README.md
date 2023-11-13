@@ -13,6 +13,8 @@ A collection of scripts I made for character rigging in Maya.
 
 [Limb Matching](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/limbMatching.mel): Creates a UI tool for matching the translation and orientation of FK limbs to IK limbs and vice versa in order to enable seamless animations when switching between systems. Written in MEL.
 
+[Cleanup Controls](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/cleanup_controls.py): An mGear post-step script for the Robot character rig that reparents controls to match the parents of their respective joints (which did not exist pre-build), constrains the wheel to rotate in a treadlike fashion inside a lattice, creates an attribute to switch between two different sets of arms, and adds a snapping function to the screen protector controls so they can be more easily animated for facial expressions.
+
 # Aim Constraint
 
 These gifs display an aim constraint component I scripted using the tools established within the modular rigging system used at Respawn Entertainment on *Apex Legends*. Given the proprietary nature of the tools, I cannot share the code. But these gifs should give an idea of how it functions. The first gif shows the component being created from scratch and creating a new bone. The second gif demonstrates that it also works when you select a pre-existing bone before excuting the script.
