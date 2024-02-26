@@ -55,7 +55,7 @@ class CustomShifterStep(cstp.customShifterMainStep):
         lSwitch = self.component('arm_settings_L0').ctl
         lFlap_ctl = self.component('arm_flap_L0').ctl
         lFlap_geo = pm.PyNode('ClosedHand_L_GEO')
-        lArm_ctl = pm.PyNode('body_C0_0_cnx|arm_L0_root')
+        lArm_ctl = pm.PyNode('shoulder_L0_ctl|arm_L0_root')
         lArm_geo = ['ArmConnection_L_GEO', 'UpperArm_L_GEO', 'MidScrew_L_GEO', 'MidScrew_s1_L_GEO', 'MidScrew_s2_L_GEO', 'LowerArm_L_GEO', 'WristScrew_L_GEO', 'WristScrew_s1_L_GEO', 'WristScrew_s2_L_GEO', 'FingerConnection_L_GEO', 'Thumb_L_GEO', 'Fingers_L_GEO']
         #Make and connect attributes
         pm.addAttr(lSwitch, ln='armSwitch', type='float', k=1, min=0, max=1, dv=.5)
@@ -86,7 +86,7 @@ class CustomShifterStep(cstp.customShifterMainStep):
         rSwitch = self.component('arm_settings_R0').ctl
         rFlap_ctl = self.component('arm_flap_R0').ctl
         rFlap_geo = pm.PyNode('ClosedHand_R_GEO')
-        rArm_ctl = pm.PyNode('body_C0_0_cnx|arm_R0_root')
+        rArm_ctl = pm.PyNode('shoulder_R0_ctl|arm_R0_root')
         rArm_geo = ['ArmConnection_R_GEO', 'UpperArm_R_GEO', 'MidScrew_R_GEO', 'MidScrew_s1_R_GEO', 'MidScrew_s2_R_GEO', 'LowerArm_R_GEO', 'WristScrew_R_GEO', 'WristScrew_s1_R_GEO', 'WristScrew_s2_R_GEO', 'FingerConnection_R_GEO', 'Thumb_R_GEO', 'Fingers_R_GEO']
         #Make and connect attributes
         pm.addAttr(rSwitch, ln='armSwitch', type='float', k=1, min=0, max=1, dv=.5)
@@ -149,10 +149,41 @@ class CustomShifterStep(cstp.customShifterMainStep):
 
         #Re-Parent Controls
         pm.parent('body_C0_0_cnx|head_C0_root', 'body_C0_fk2_ctl')
-        pm.parent('body_C0_0_cnx|name_tag_C0_root', 'body_C0_fk1_ctl')
-        pm.parent('body_C0_0_cnx|arm_R0_root', 'body_C0_fk1_ctl')
-        pm.parent('body_C0_0_cnx|arm_L0_root', 'body_C0_fk1_ctl')
+        '''pm.parent('body_C0_0_cnx|name_tag_C0_root', 'body_C0_fk1_ctl')
+        pm.parent('body_C0_0_cnx|shoulder_R0_root', 'body_C0_fk1_ctl')
+        pm.parent('body_C0_0_cnx|shoulder_L0_root', 'body_C0_fk1_ctl')
         pm.parent('body_C0_0_cnx|arm_flap_L0_root', 'body_C0_fk1_ctl')
-        pm.parent('body_C0_0_cnx|arm_flap_R0_root', 'body_C0_fk1_ctl')
+        pm.parent('body_C0_0_cnx|arm_flap_R0_root', 'body_C0_fk1_ctl')'''
+        #Constrain Mid Body Controls
+        #Bottom Spine Joint
+        pm.parentConstraint(pm.PyNode('body_C0_0_jnt'), pm.PyNode('body_C0_0_cnx|name_tag_C0_root'), mo=True, w=0.3)
+        pm.parentConstraint(pm.PyNode('body_C0_0_jnt'), pm.PyNode('body_C0_0_cnx|shoulder_L0_root'), mo=True, w=0.4)
+        pm.parentConstraint(pm.PyNode('body_C0_0_jnt'), pm.PyNode('body_C0_0_cnx|shoulder_R0_root'), mo=True, w=0.4)
+        pm.parentConstraint(pm.PyNode('body_C0_0_jnt'), pm.PyNode('body_C0_0_cnx|arm_flap_L0_root'), mo=True, w=0.2)
+        pm.parentConstraint(pm.PyNode('body_C0_0_jnt'), pm.PyNode('body_C0_0_cnx|arm_flap_R0_root'), mo=True, w=0.2)
+        #Mid Spine Joint
+        pm.parentConstraint(pm.PyNode('body_C0_1_jnt'), pm.PyNode('body_C0_0_cnx|name_tag_C0_root'), mo=True, w=0.3)
+        pm.parentConstraint(pm.PyNode('body_C0_1_jnt'), pm.PyNode('body_C0_0_cnx|shoulder_L0_root'), mo=True, w=0.6)
+        pm.parentConstraint(pm.PyNode('body_C0_1_jnt'), pm.PyNode('body_C0_0_cnx|shoulder_R0_root'), mo=True, w=0.6)
+        pm.parentConstraint(pm.PyNode('body_C0_1_jnt'), pm.PyNode('body_C0_0_cnx|arm_flap_L0_root'), mo=True, w=0.4)
+        pm.parentConstraint(pm.PyNode('body_C0_1_jnt'), pm.PyNode('body_C0_0_cnx|arm_flap_R0_root'), mo=True, w=0.4)
+        #Top Spine Joint
+        pm.parentConstraint(pm.PyNode('body_C0_2_jnt'), pm.PyNode('body_C0_0_cnx|name_tag_C0_root'), mo=True, w=1)
+        pm.parentConstraint(pm.PyNode('body_C0_2_jnt'), pm.PyNode('body_C0_0_cnx|shoulder_L0_root'), mo=True, w=1)
+        pm.parentConstraint(pm.PyNode('body_C0_2_jnt'), pm.PyNode('body_C0_0_cnx|shoulder_R0_root'), mo=True, w=1)
+        pm.parentConstraint(pm.PyNode('body_C0_2_jnt'), pm.PyNode('body_C0_0_cnx|arm_flap_L0_root'), mo=True, w=1)
+        pm.parentConstraint(pm.PyNode('body_C0_2_jnt'), pm.PyNode('body_C0_0_cnx|arm_flap_R0_root'), mo=True, w=1)
+
+        #Add Face Controls
+        # Create left arm switch
+        # Get Assets
+        Head_ctl = self.component('head_C0').ctl
+        Face_tx = pm.PyNode('face_texture_file')
+        # Make and connect attributes
+        pm.addAttr(Head_ctl, ln='face', type='enum', en=['focus:happy:smile:angry:confuse:dead:depress:jealous:proud:sad:surprise:tired'], k=1)
+        pm.connectAttr(Head_ctl.face, Face_tx.frameExtension)
+
+        '''Set Wheel Space'''
+        pm.setAttr('inner_wheel_C1_ctl.control_ikref', 'outer_wheel_C0_ctl')
 
         return
