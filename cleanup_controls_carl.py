@@ -1,6 +1,7 @@
 import mgear.shifter.custom_step as cstp
 import pymel.core as pm
-from mgear.rigbits.facial_rigger import eye_rigger, lips_rigger
+from mgear.rigbits.facial_rigger import eye_rigger, lips_rigger, brow_rigger
+from mgear.rigbits import replaceShape
 
 
 class CustomShifterStep(cstp.customShifterMainStep):
@@ -183,5 +184,74 @@ class CustomShifterStep(cstp.customShifterMainStep):
 
         '''Build Lips'''
         lips_rigger.rig_from_file(r"C:/Users/steve/OneDrive/Documents/maya/projects/Bulbank/data/rigConfigs/carl.lips")
+
+        '''Build Brows'''
+        brow_rigger.rig_from_file(r"C:/Users/steve/OneDrive/Documents/maya/projects/Bulbank/data/rigConfigs/carl_L.brows")
+        brow_rigger.rig_from_file(r"C:/Users/steve/OneDrive/Documents/maya/projects/Bulbank/data/rigConfigs/carl_R.brows")
+        #Move brow shapes outside of brow
+        browBuffers = pm.ls('brow*' + '*controlBuffer')
+        for browBuffer in browBuffers:
+            if browBuffer == pm.PyNode('brow_L0_ctl_controlBuffer') or browBuffer == pm.PyNode(
+                    'brow_R0_ctl_controlBuffer'):
+                browBuffers.remove(browBuffer)
+        for browBuffer in browBuffers:
+            pm.select(browBuffer)
+            pm.select(pm.PyNode(browBuffer.nodeName().replace('_controlBuffer', '')), add=True)
+            replaceShape()
+
+        '''Control teeth visibility with jaw control'''
+        #Get Assets
+        jaw_ctl = pm.PyNode('mouth_C0_jaw_ctl')
+        top_ctl = pm.PyNode('mouth_C0_teethup_ctl')
+        bottom_ctl = pm.PyNode('mouth_C0_teethlow_ctl')
+        topTeeth = pm.PyNode('Teeth_Upper_GEO')
+        topGum = pm.PyNode('Gum_Upper_GEO')
+        bottomTeeth = pm.PyNode('Teeth_Lower_GEO')
+        bottomGum = pm.PyNode('Gum_Lower_GEO')
+        bigTeeth = pm.PyNode('BigTeeth_GEO')
+        bigTeethCtl = pm.PyNode('bigTeeth_C0_ctl')
+
+        #Make and connect attributes
+        pm.addAttr(jaw_ctl, ln='teeth_vis', type='bool', k=1, dv=True)
+        pm.connectAttr(jaw_ctl.teeth_vis, top_ctl.visibility)
+        pm.connectAttr(jaw_ctl.teeth_vis, topTeeth.visibility)
+        pm.connectAttr(jaw_ctl.teeth_vis, topGum.visibility)
+        pm.connectAttr(jaw_ctl.teeth_vis, bottom_ctl.visibility)
+        pm.connectAttr(jaw_ctl.teeth_vis, bottomTeeth.visibility)
+        pm.connectAttr(jaw_ctl.teeth_vis, bottomGum.visibility)
+
+        inv_teeth_vis = pm.shadingNode('reverse', au=1)
+        pm.connectAttr(jaw_ctl.teeth_vis, inv_teeth_vis.inputX)
+        pm.connectAttr(inv_teeth_vis.outputX, bigTeeth.visibility)
+        pm.setAttr(bigTeethCtl.visibility, lock=0)
+        pm.connectAttr(inv_teeth_vis.outputX, bigTeethCtl.visibility)
+
+        '''Set limits on eye rotation'''
+        pm.transformLimits('eye_L0_eye_jnt', erx=(-15, 20), ery=(-5, 35), rx=(-15, 20), ry=(-5, 35))
+        pm.transformLimits('eye_R0_eye_jnt', erx=(-15, 20), ery=(-35, 5), rx=(-15, 20), ry=(-35, 5))
+
+        '''Set default jaw sensitivity'''
+        pm.setAttr('faceUI_C0_ctl.mouth_siderot', 2)
+        pm.setAttr('faceUI_C0_ctl.mouth_vertrot', 2)
+
+        '''Mouth Master Control'''
+        jawCtl = pm.PyNode('mouth_C0_jaw_ctl')
+        #Group mouth control parents
+        con_grp = pm.group(pm.PyNode('mouth_C0_liplow_npo'))
+        lowCon = pm.parentConstraint(pm.PyNode('mouthMaster_C0_ctl'), con_grp, mo=True, w=0)
+        con_grp = pm.group(pm.PyNode('mouth_C0_lipup_npo'))
+        upCon = pm.parentConstraint(pm.PyNode('mouthMaster_C0_ctl'), con_grp, mo=True, w=0)
+        #Create and connect switch on jaw
+        pm.addAttr(pm.PyNode('mouth_C0_jaw_ctl'), type='float', min=0, max=1, dv=0, longName='mouthMasterSwitch', keyable=True)
+        jawCtl.mouthMasterSwitch >> upCon.getWeightAliasList()[0]
+        jawCtl.mouthMasterSwitch >> lowCon.getWeightAliasList()[0]
+        pm.setAttr('mouthMaster_C0_ctl.visibility', k=True, lock=False)
+        jawCtl.mouthMasterSwitch >> 'mouthMaster_C0_ctl.visibility'
+
+        '''Mouth Shapes'''
+        pm.addAttr(pm.PyNode('mouth_C0_jaw_ctl'), type='float', min=0, max=1, dv=0, longName='puffCheecks',
+                   keyable=True)
+        pm.addAttr(pm.PyNode('mouth_C0_jaw_ctl'), type='float', min=0, max=1, dv=0, longName='puckerLips',
+                   keyable=True)
 
         return
