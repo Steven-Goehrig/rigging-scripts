@@ -13,10 +13,6 @@ A collection of scripts I made for character rigging in Maya.
 
 [Limb Matching](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/limbMatching.mel): Creates a UI tool for matching the translation and orientation of FK limbs to IK limbs and vice versa in order to enable seamless animations when switching between systems. Written in MEL.
 
-[Cleanup Controls Robot](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/cleanup_controls_robot.py): An mGear post-step script for the Robot character rig that reparents controls to match the parents of their respective joints (which did not exist pre-build), constrains the wheel to rotate in a treadlike fashion inside a lattice, creates an attribute to switch between two different sets of arms, and adds a snapping function to the screen protector controls so they can be more easily animated for facial expressions.
-
-[Cleanup Controls Carl](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/cleanup_controls_carl.py): An mGear post-step script for the Carl character rig that adds space switching to the FK arms and legs, and initiates the build for the face components.
-
 [Ropify Jennifern](https://github.com/Steven-Goehrig/rigging-scripts/blob/main/ropify.py): An mGear post-step script for the Jennifern character rig that sets up her spring rope leaves.
 
 # Aim Constraint
